@@ -1,0 +1,48 @@
+# LoanGuard Interest Validator - Streamlit Configuration
+# Production-ready configuration for banking environment
+
+[server]
+# Server settings
+port = 8501
+address = "localhost"
+headless = true
+enableCORS = true
+enableXsrfProtection = true
+maxUploadSize = 50  # 50MB max file size
+maxMessageSize = 50  # 50MB max message size
+
+# Security settings
+cookieSecret = "loanguard-banking-tool-secure-key-change-in-production"
+
+[browser]
+# Browser settings
+gatherUsageStats = false
+
+[theme]
+# Professional banking theme
+primaryColor = "#1f4e79"          # Primary blue for banking
+backgroundColor = "#ffffff"        # Clean white background
+secondaryBackgroundColor = "#f8f9fa"  # Light gray for sections
+textColor = "#262730"             # Dark text for readability
+font = "sans serif"               # Professional font
+
+[logger]
+# Logging configuration
+level = "info"
+messageFormat = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+
+[client]
+# Client settings
+showErrorDetails = false
+
+[runner]
+# Runner settings
+magicEnabled = false
+
+[mapbox]
+# Disable mapbox (not needed for this application)
+token = ""
+
+[deprecation]
+# Handle deprecation warnings
+showPyplotGlobalUse = false
