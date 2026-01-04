@@ -354,6 +354,270 @@ def render_progress_indicator(current_step: str):
     
     st.markdown(progress_html, unsafe_allow_html=True)
 
+def create_sample_correct_pdf():
+    """
+    Create a sample PDF with correct interest calculation that will PASS validation.
+    
+    Returns:
+        bytes: PDF content as bytes
+    """
+    try:
+        from reportlab.lib.pagesizes import letter
+        from reportlab.pdfgen import canvas
+        from reportlab.lib.styles import getSampleStyleSheet
+        from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+        import io
+        
+        buffer = io.BytesIO()
+        doc = SimpleDocTemplate(buffer, pagesize=letter)
+        styles = getSampleStyleSheet()
+        story = []
+        
+        # Sample data that will result in PASS
+        story.append(Paragraph("INTEREST PAYMENT NOTICE", styles['Title']))
+        story.append(Spacer(1, 20))
+        
+        story.append(Paragraph("Loan Information:", styles['Heading2']))
+        story.append(Paragraph("Principal Amount: $1,000,000.00", styles['Normal']))
+        story.append(Paragraph("Interest Rate: 5.25%", styles['Normal']))
+        story.append(Paragraph("Start Date: 01/01/2024", styles['Normal']))
+        story.append(Paragraph("End Date: 03/31/2024", styles['Normal']))
+        story.append(Spacer(1, 20))
+        
+        # Calculate correct interest: $1,000,000 × 0.0525 × 90 ÷ 360 = $13,125.00
+        story.append(Paragraph("Interest Calculation:", styles['Heading2']))
+        story.append(Paragraph("Interest Amount: $13,125.00", styles['Normal']))
+        story.append(Spacer(1, 20))
+        
+        story.append(Paragraph("This notice contains correct interest calculation.", styles['Normal']))
+        
+        doc.build(story)
+        buffer.seek(0)
+        return buffer.getvalue()
+        
+    except ImportError:
+        # Fallback: create a simple text-based PDF using basic PDF structure
+        return create_simple_pdf_correct()
+
+def create_sample_incorrect_pdf():
+    """
+    Create a sample PDF with incorrect interest calculation that will FAIL validation.
+    
+    Returns:
+        bytes: PDF content as bytes
+    """
+    try:
+        from reportlab.lib.pagesizes import letter
+        from reportlab.pdfgen import canvas
+        from reportlab.lib.styles import getSampleStyleSheet
+        from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+        import io
+        
+        buffer = io.BytesIO()
+        doc = SimpleDocTemplate(buffer, pagesize=letter)
+        styles = getSampleStyleSheet()
+        story = []
+        
+        # Sample data that will result in FAIL
+        story.append(Paragraph("INTEREST PAYMENT NOTICE", styles['Title']))
+        story.append(Spacer(1, 20))
+        
+        story.append(Paragraph("Loan Information:", styles['Heading2']))
+        story.append(Paragraph("Principal Amount: $1,000,000.00", styles['Normal']))
+        story.append(Paragraph("Interest Rate: 5.25%", styles['Normal']))
+        story.append(Paragraph("Start Date: 01/01/2024", styles['Normal']))
+        story.append(Paragraph("End Date: 03/31/2024", styles['Normal']))
+        story.append(Spacer(1, 20))
+        
+        # Incorrect interest: should be $13,125.00 but showing $15,000.00
+        story.append(Paragraph("Interest Calculation:", styles['Heading2']))
+        story.append(Paragraph("Interest Amount: $15,000.00", styles['Normal']))
+        story.append(Spacer(1, 20))
+        
+        story.append(Paragraph("This notice contains incorrect interest calculation for testing.", styles['Normal']))
+        
+        doc.build(story)
+        buffer.seek(0)
+        return buffer.getvalue()
+        
+    except ImportError:
+        # Fallback: create a simple text-based PDF using basic PDF structure
+        return create_simple_pdf_incorrect()
+
+def create_simple_pdf_correct():
+    """
+    Create a simple PDF with correct interest calculation using basic PDF structure.
+    
+    Returns:
+        bytes: PDF content as bytes
+    """
+    pdf_content = """%PDF-1.4
+1 0 obj
+<<
+/Type /Catalog
+/Pages 2 0 R
+>>
+endobj
+
+2 0 obj
+<<
+/Type /Pages
+/Kids [3 0 R]
+/Count 1
+>>
+endobj
+
+3 0 obj
+<<
+/Type /Page
+/Parent 2 0 R
+/MediaBox [0 0 612 792]
+/Contents 4 0 R
+/Resources <<
+/Font <<
+/F1 5 0 R
+>>
+>>
+>>
+endobj
+
+4 0 obj
+<<
+/Length 400
+>>
+stream
+BT
+/F1 16 Tf
+50 750 Td
+(INTEREST PAYMENT NOTICE) Tj
+0 -40 Td
+/F1 12 Tf
+(Principal Amount: $1,000,000.00) Tj
+0 -20 Td
+(Interest Rate: 5.25%) Tj
+0 -20 Td
+(Start Date: 01/01/2024) Tj
+0 -20 Td
+(End Date: 03/31/2024) Tj
+0 -40 Td
+(Interest Amount: $13,125.00) Tj
+ET
+endstream
+endobj
+
+5 0 obj
+<<
+/Type /Font
+/Subtype /Type1
+/BaseFont /Helvetica
+>>
+endobj
+
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000274 00000 n 
+0000000724 00000 n 
+trailer
+<<
+/Size 6
+/Root 1 0 R
+>>
+startxref
+801
+%%EOF"""
+    return pdf_content.encode('utf-8')
+
+def create_simple_pdf_incorrect():
+    """
+    Create a simple PDF with incorrect interest calculation using basic PDF structure.
+    
+    Returns:
+        bytes: PDF content as bytes
+    """
+    pdf_content = """%PDF-1.4
+1 0 obj
+<<
+/Type /Catalog
+/Pages 2 0 R
+>>
+endobj
+
+2 0 obj
+<<
+/Type /Pages
+/Kids [3 0 R]
+/Count 1
+>>
+endobj
+
+3 0 obj
+<<
+/Type /Page
+/Parent 2 0 R
+/MediaBox [0 0 612 792]
+/Contents 4 0 R
+/Resources <<
+/Font <<
+/F1 5 0 R
+>>
+>>
+>>
+endobj
+
+4 0 obj
+<<
+/Length 400
+>>
+stream
+BT
+/F1 16 Tf
+50 750 Td
+(INTEREST PAYMENT NOTICE) Tj
+0 -40 Td
+/F1 12 Tf
+(Principal Amount: $1,000,000.00) Tj
+0 -20 Td
+(Interest Rate: 5.25%) Tj
+0 -20 Td
+(Start Date: 01/01/2024) Tj
+0 -20 Td
+(End Date: 03/31/2024) Tj
+0 -40 Td
+(Interest Amount: $15,000.00) Tj
+ET
+endstream
+endobj
+
+5 0 obj
+<<
+/Type /Font
+/Subtype /Type1
+/BaseFont /Helvetica
+>>
+endobj
+
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000274 00000 n 
+0000000724 00000 n 
+trailer
+<<
+/Size 6
+/Root 1 0 R
+>>
+startxref
+801
+%%EOF"""
+    return pdf_content.encode('utf-8')
+
 def render_upload_section():
     """Render the file upload section with enhanced styling and guidance."""
     st.markdown("""
@@ -362,8 +626,8 @@ def render_upload_section():
     </div>
     """, unsafe_allow_html=True)
     
-    # Create two columns for better layout
-    col1, col2 = st.columns([2, 1])
+    # Create three columns for better layout with sample PDFs
+    col1, col2, col3 = st.columns([2, 1, 1])
     
     with col1:
         st.markdown("""
@@ -394,6 +658,38 @@ def render_upload_section():
             </ul>
         </div>
         """, unsafe_allow_html=True)
+    
+    with col3:
+        st.markdown("""
+        <div style="background: #f8f9fa; padding: 1.5rem; border-radius: 10px; border-left: 4px solid #28a745;">
+            <h5 style="color: #155724; margin-top: 0;">📥 Sample PDFs for Testing</h5>
+            <p style="color: #155724; font-size: 0.85rem; margin-bottom: 1rem;">
+                Download sample files to test the validator:
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        # Sample PDF download buttons
+        sample_correct_pdf = create_sample_correct_pdf()
+        sample_incorrect_pdf = create_sample_incorrect_pdf()
+        
+        st.download_button(
+            label="📄 Download Sample (PASS)",
+            data=sample_correct_pdf,
+            file_name="sample_correct_interest_notice.pdf",
+            mime="application/pdf",
+            help="Download a sample PDF that will show PASS result",
+            use_container_width=True
+        )
+        
+        st.download_button(
+            label="📄 Download Sample (FAIL)",
+            data=sample_incorrect_pdf,
+            file_name="sample_incorrect_interest_notice.pdf", 
+            mime="application/pdf",
+            help="Download a sample PDF that will show FAIL result",
+            use_container_width=True
+        )
     
     if uploaded_file is not None:
         if validate_pdf_file(uploaded_file):
