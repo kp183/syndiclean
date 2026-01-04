@@ -1,18 +1,15 @@
 # LoanGuard Interest Validator - Production Dependencies
 # Core application framework
-streamlit==1.29.0
+streamlit>=1.29.0
 
 # PDF processing and data extraction
-pdfplumber==0.10.3
+pdfplumber>=0.10.3
 
-# Data manipulation and analysis
-pandas==2.1.4
+# Data manipulation and analysis - using version compatible with Python 3.13
+pandas>=2.2.0
 
 # Property-based testing framework
-hypothesis==6.92.1
-
-# PDF generation for sample documents
-reportlab==4.0.7
+hypothesis>=6.92.0
 
 # Additional dependencies for production deployment
 python-dateutil>=2.8.2
